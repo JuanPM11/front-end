@@ -1,0 +1,51 @@
+<form (submit)="guardarCambios()" [formGroup]="form">
+
+    <mat-form-field appereance="outline">
+        <mat-label>Titulo*</mat-label>
+        <input formControlName="titulo" matInput>
+        <mat-error>
+            El campo Titulo es requerido
+        </mat-error>
+    </mat-form-field>
+    <div class="contenedorCheckBox">
+    <mat-checkbox formControlName="enCines">En cines</mat-checkbox>
+    </div>
+    <mat-form-field appereance="outline">
+        <mat-label>Trailer</mat-label>
+        <input formControlName="trailer" matInput>
+    </mat-form-field>
+
+    <mat-form-field appereance="outline">
+        <mat-label>Fecha de Lanzamiento</mat-label>
+        <input formControlName="fechaLanzamiento" matInput [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <h4>Seleccionar Poster</h4>
+    <app-input-img
+        [urlImagenActual]="modelo?.poster"
+     (archivoSeleccionado)="archivoSeleccionado($event)"></app-input-img>
+
+    <h4>Resumen de la Pelicula</h4>
+    <app-input-makdown
+    [contenidoMarkDown]="modelo?.resumen"
+    (changeMarkDown)="changeMarkDown($event)"
+    [placeHolderTextArea]="'Resumen'"></app-input-makdown>
+
+    <h4>Seleccione los géneros</h4>
+    <app-selector-multiple  
+    [Seleccionados]="generosSeleccionados"
+    [NoSeleccionados]="generosNoSeleccionados"></app-selector-multiple>
+
+
+    <h4>Seleccione los cines</h4>
+    <app-selector-multiple  
+    [Seleccionados]="cinesSeleccionados"
+    [NoSeleccionados]="cinesNoSeleccionados"></app-selector-multiple>
+
+    <div>
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Guardar Cambios</button>
+        <a mat-stroked-button routerLink="/">Cancelar</a>
+    </div>
+</form>
