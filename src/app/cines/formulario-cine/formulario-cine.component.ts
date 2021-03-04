@@ -17,6 +17,9 @@ export class FormularioCineComponent implements OnInit {
   form: FormGroup
 
   @Input()
+  errores: string[] = [];
+
+  @Input()
   modelo: cineCreacionDTO;
 
   @Output()

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { latLng, LeafletMouseEvent, tileLayer, Marker, marker, icon } from 'leaflet';
-import { Coordenada } from './coordenada';
+import { Coordenada, CoordenadaConMensaje } from './coordenada';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -30,14 +30,24 @@ export class MapaComponent implements OnInit {
   constructor() { }
 
   @Input()
-  coordenadasIniciales: Coordenada[] = [];
+  coordenadasIniciales: CoordenadaConMensaje[] = [];
+
+  @Input()
+  soloLectura: boolean = false;
 
   @Output()
   coordenadaSeleccionada: EventEmitter<Coordenada> = new EventEmitter<Coordenada>();
 
   ngOnInit(): void {
 
-    this.capas = this.coordenadasIniciales.map(valor => marker([valor.latitud, valor.longitud]));
+    this.capas = this.coordenadasIniciales.map((valor) => {
+      let marcador = marker([valor.latitud, valor.longitud]);
+      if(valor.mensaje){
+        marcador.bindPopup(valor.mensaje, {autoClose: false, autoPan: false});
+      }
+
+      return marcador;
+    });
   }
   
 
@@ -52,10 +62,13 @@ export class MapaComponent implements OnInit {
   capas: Marker<any>[] = [];
 
   manejarClick(event: LeafletMouseEvent){
-    const LATITUD = event.latlng.lat;
-    const LONGITUD = event.latlng.lng;
-    this.capas=[];
-    this.capas.push(marker([LATITUD,LONGITUD]));
-    this.coordenadaSeleccionada.emit({latitud: LATITUD, longitud: LONGITUD});
+   
+    if(!this.soloLectura){
+      const LATITUD = event.latlng.lat;
+      const LONGITUD = event.latlng.lng;
+      this.capas=[];
+      this.capas.push(marker([LATITUD,LONGITUD]));
+      this.coordenadaSeleccionada.emit({latitud: LATITUD, longitud: LONGITUD});
+    }
   }
 }

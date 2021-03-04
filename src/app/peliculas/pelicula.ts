@@ -1,3 +1,8 @@
+import { NgIf } from "@angular/common";
+import { actorPeliculaDTO } from "../actores/actor";
+import { cineDTO } from "../cines/cine";
+import { generoDTO } from "../generos/genero";
+
 export interface PeliculaCreacionDTO{
     titulo: string;
     resumen: string;
@@ -5,6 +10,9 @@ export interface PeliculaCreacionDTO{
     fechaLanzamiento: Date;
     trailer: string;
     poster: File;
+    generosIds: number[];
+    actores: actorPeliculaDTO[];
+    cinesIds: number[];
 }
 
 
@@ -15,4 +23,17 @@ export interface PeliculaDTO{
     fechaLanzamiento: Date;
     trailer: string;
     poster: string;
+    generos: generoDTO[];
+    actores: actorPeliculaDTO[];
+    cines: cineDTO[];
+}
+
+export interface PeliculaPostGet{
+    generos: generoDTO[];
+    cines: cineDTO[];
+}
+
+export interface LandingPageDTO{
+    enCines: PeliculaDTO[];
+    proximosEstrenos: PeliculaDTO[];
 }
