@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { formatearFecha } from '../utilidades/utilidades';
-import { LandingPageDTO, PeliculaCreacionDTO, PeliculaDTO, PeliculaPostGet } from './pelicula';
+import { LandingPageDTO, PeliculaCreacionDTO, PeliculaDTO, PeliculaPostGet, PeliculaPutGet } from './pelicula';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,11 @@ export class PeliculasService {
 
   }
 
+  public putGet(id: number): Observable<PeliculaPutGet>{
+    return this.http.get<PeliculaPutGet>(`${this.apiURL}/putget/${id}`);
+
+  }
+
   public postGet(): Observable<PeliculaPostGet>
   {
     return this.http.get<PeliculaPostGet>(`${this.apiURL}/postget`);
@@ -32,6 +37,13 @@ export class PeliculasService {
 
     const formData = this.ConstruirFormData(pelicula);
     return this.http.post(this.apiURL, formData);
+
+  }
+
+  public editar(id:number, pelicula: PeliculaCreacionDTO){
+
+    const formData = this.ConstruirFormData(pelicula);
+    return this.http.put(`${this.apiURL}/${id}`, formData);
 
   }
 
